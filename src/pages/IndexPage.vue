@@ -21,7 +21,7 @@
       </q-card-section>
     </q-card>
 
-    <q-card>
+    <q-card class="q-mb-md">
       <q-card-section>
         <div class="text-h6">Docker Concepts (สรุปสั้น ๆ)</div>
         <q-list bordered separator class="q-mt-sm">
@@ -29,6 +29,20 @@
             <q-item-section>
               <q-item-label>{{ item.title }}</q-item-label>
               <q-item-label caption>{{ item.detail }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
+
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Docker Quick Reference (คำสั่งที่ใช้บ่อย)</div>
+        <q-list bordered separator class="q-mt-sm">
+          <q-item v-for="(cmd, index) in dockerCommands" :key="index">
+            <q-item-section>
+              <q-item-label><code>{{ cmd.command }}</code></q-item-label>
+              <q-item-label caption>{{ cmd.when }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -58,6 +72,33 @@ const gitSteps = [
   {
     title: 'push ขึ้น GitHub',
     detail: 'ใช้ git push -u origin feature/quasar-demo แล้วเปิด Pull Request',
+  },
+]
+
+const dockerCommands = [
+  {
+    command: 'docker build -t my-quasar-frontend:latest -f frontend/Dockerfile ./frontend',
+    when: 'ใช้เมื่อต้องการ build image จาก Dockerfile โดยระบุ build context เป็นโฟลเดอร์ frontend',
+  },
+  {
+    command: 'docker run -d -p 8080:80 --name my-quasar-frontend-container my-quasar-frontend:latest',
+    when: 'ใช้เมื่อต้องการรัน container จาก image และ map พอร์ต 8080 บนเครื่องไปยังพอร์ต 80 ใน container',
+  },
+  {
+    command: 'docker compose up -d --build',
+    when: 'ใช้เมื่อต้องการ build image และรันบริการทั้งหมดใน docker-compose.yml แบบ background',
+  },
+  {
+    command: 'docker compose down',
+    when: 'ใช้เมื่อต้องการหยุดและลบ container รวมถึง network ที่ Docker Compose สร้างขึ้น',
+  },
+  {
+    command: 'docker ps --filter name=my-quasar-frontend-container',
+    when: 'ใช้เมื่อต้องการตรวจสอบว่า container กำลังรันอยู่หรือไม่',
+  },
+  {
+    command: 'docker compose logs frontend',
+    when: 'ใช้เมื่อต้องการดู log ของบริการ frontend เพื่อตรวจสอบข้อผิดพลาดหรือสถานะการทำงาน',
   },
 ]
 
